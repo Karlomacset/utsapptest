@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Utilities\ProxyRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class AuthController extends Controller
@@ -60,17 +61,20 @@ class AuthController extends Controller
             'token' => $resp->access_token,
             'expiresIn' => $resp->expires_in,
             'message' => 'You have been logged in',
+            'userID' => $user->id,
         ], 200);
     }
 
     public function refreshToken()
     {
         $resp = $this->proxy->refreshAccessToken();
+        $user = Auth::guard('api')->user();
 
         return response([
             'token' => $resp->access_token,
             'expiresIn' => $resp->expires_in,
             'message' => 'Token has been refreshed.',
+            'userID' => $user->id,
         ], 200);
     }
 
@@ -84,6 +88,19 @@ class AuthController extends Controller
 
         return response([
             'message' => 'You have been successfully logged out',
+        ], 200);
+    }
+
+    public function user()
+    {
+        // get the current user and return with basic data
+        $user = Auth::guard('api')->user();
+        abort_unless($user, 404, 'This user does not exist.');
+
+        return response([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
         ], 200);
     }
 

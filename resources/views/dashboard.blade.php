@@ -1,4 +1,4 @@
-@extends('layouts.sbk')
+@extends('layouts.sbk',[$dash=true])
 
 @section('content')
 

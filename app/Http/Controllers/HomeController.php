@@ -14,6 +14,22 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+   
+        $this->pageSet = [
+            'pagename'=>'Dashboard',
+            'menuTag'=>'Dashboard',
+            'menuHead'=>'',
+            'actionHed'=>'dashboard',
+            'actionTyp'=>'List',
+            'actionID'=>0
+        ];
+
+        // $this->middleware('permission:admin-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:admin-show', ['only' => ['index']]);
+        // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
+        // $this->roles = Role::all();
+
     }
 
     /**
@@ -23,6 +39,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('dashboard', ['ps'=>$this->pageSet]);
     }
 }

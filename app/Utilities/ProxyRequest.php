@@ -20,6 +20,7 @@ class ProxyRequest
         $refreshToken = request()->cookie('refresh_token');
 
         abort_unless($refreshToken, 403, 'Your refresh token is expired.');
+
         $params = [
             'grant_type' => 'refresh_token',
             'refresh_token' => $refreshToken,
@@ -32,7 +33,7 @@ class ProxyRequest
 
     protected function makePostRequest(array $params)
     {
-
+        
         $params = array_merge([
             'client_id' => config('services.passport.password_client_id'),
             'client_secret' => config('services.passport.password_client_secret'),
