@@ -5,14 +5,14 @@
         <div class="col-12">
             <div class="card card-outline-info">
                 <div class="card-header">
-                    <h4 class="mb-0 text-white">Micro Insurance Product</h4>
+                    <h4 class="mb-0 text-white">Provider of Micro Insurance Product</h4>
                 </div>
                 @include('partials.errors')
                 <div class="card-body">
-                    <h6 class="card-subtitle">Define the product to be sold to consumers</h6>
+                    <h6 class="card-subtitle">Define the insurance provider for micro insurance products</h6>
                     <form class="form-material mt-4" action="{{route($ps['actionHed'].'.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @include('admin.products.details')
+                        @include('admin.providers.details')
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
                                 Save</button>

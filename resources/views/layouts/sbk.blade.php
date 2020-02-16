@@ -3,6 +3,8 @@
 
 <head>
     @include('partials.siteHeader')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 </head>
 
 <body class="fix-header card-no-border logo-center">
@@ -105,7 +107,11 @@
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li> -->
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                                    <li><a href="{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Logout</a></li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
                                 </ul>
                             </div>
                         </li>
@@ -176,6 +182,31 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+    <script>
+        @if(Session::has('message'))
+          var type = "{{ Session::get('alert-type', 'info') }}";
+          toastr.options.progressBar = true;
+          switch(type){
+            case 'info':
+                  toastr.info("{{ Session::get('message') }}");
+                  break;
+              
+            case 'warning':
+                  toastr.warning("{{ Session::get('message') }}");
+                  break;
+
+            case 'success':
+                  toastr.success("{{ Session::get('message') }}");
+                  break;
+            case 'danger':
+                  toastr.warning("{{ Session::get('message') }}");
+                  break;
+            case 'error':
+                  toastr.error("{{ Session::get('message') }}");
+                break;
+            }
+        @endif
+    </script>
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->

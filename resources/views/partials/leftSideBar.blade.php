@@ -30,7 +30,7 @@
                                 </li> -->
                                 <li><a href="app-chat.html">Chat app</a></li>
                                 <li><a href="app-ticket.html">Support Ticket</a></li>
-                                <li><a href="app-contact.html">Customers</a></li>
+                                
                                 <li><a href="app-contact2.html">Employee Grid</a></li>
                                 <li><a href="app-contact-detail.html">Employee Details</a></li>
                             </ul>
@@ -38,10 +38,11 @@
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Elements</span></a>
                             <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{route('customer.index')}}">Customers</a></li>
                                 <li><a href="{{route('product.index')}}">Products</a></li>
-                                <li><a href="ui-sweetalert.html">Providers</a></li>
-                                <li><a href="ui-cards.html">Gateways</a></li>
-                                <li><a href="ui-cards.html">Keywords</a></li>
+                                <li><a href="{{route('provider.index')}}">Providers</a></li>
+                                <li><a href="{{route('gateway.index')}}">Gateways</a></li>
+                                <li><a href="{{route('keyword.index')}}">Keywords</a></li>
                             </ul>
                         </li>
                         <li class="nav-devider"></li>

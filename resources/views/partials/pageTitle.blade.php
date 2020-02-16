@@ -27,9 +27,13 @@
                                     <div id="lastmonthchart"></div>
                                 </div>
                             </div>
-                            @elseif($ps['actionTyp'] == 'Edit' || $ps['actionTyp'] == 'Create')
+                            @elseif($ps['actionTyp'] == 'Create')
                                 <div class="d-flex mr-3 ml2">
                                     <a class="btn btn-success" href="{{route($ps['actionHed'].'.store')}}" >Save {{$ps['actionHed']}}</a>
+                                </div>
+                            @elseif($ps['actionTyp'] == 'Edit' )
+                                <div class="d-flex mr-3 ml2">
+                                    <a class="btn btn-success" href="{{route($ps['actionHed'].'.update',$prod->id)}}" >Save {{$ps['actionHed']}}</a>
                                 </div>
                             @else
                                 <div class="d-flex mr-3 ml2">

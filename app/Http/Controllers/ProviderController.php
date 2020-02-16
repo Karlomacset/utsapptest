@@ -4,9 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Provider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class ProviderController extends Controller
 {
+    public function __construct()
+    {
+        $this->pageSet = [
+            'pagename'=>'Providers',
+            'menuTag'=>'Providers',
+            'menuHead'=>'',
+            'actionHed'=>'provider',
+            'actionTyp'=>'List',
+            'actionID'=>0
+        ];
+
+        // $this->middleware('permission:admin-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:admin-show', ['only' => ['index']]);
+        // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
+        // $this->roles = Role::all();
+        $this->middleware('auth');
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +36,9 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        //
+        $providers = Provider::all();
+
+        return view('admin.providers.index',['ps'=>$this->pageSet,'providers'=>$providers]);
     }
 
     /**
@@ -24,7 +48,9 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+        $this->pageSet['actionTyp'] = 'Create';
+
+        return view('admin.providers.create',['ps'=>$this->pageSet]);
     }
 
     /**
@@ -35,7 +61,21 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'companyName'=>'required|string',
+        ]);
+
+        $provider = Provider::create($request->all());
+
+        if($request->has('fileAttached')){
+            $provider
+                ->addMediaFromRequest('fileAttached')
+                ->toMediaCollection('providers');
+        }
+
+        activity()->log('Provider'.$request->companyName.' record was CREATED by logged-in user '.Auth::user()->name);
+
+        return redirect()->route('provider.index')->with(['alert-type'=>'success','message'=>'New Provider was created successfuly']);
     }
 
     /**
@@ -57,7 +97,9 @@ class ProviderController extends Controller
      */
     public function edit(Provider $provider)
     {
-        //
+        $this->pageSet['actionTyp'] = 'Edit';
+
+        return view('admin.providers.edit',['ps'=>$this->pageSet,'prod'=>$provider]);
     }
 
     /**
@@ -69,7 +111,20 @@ class ProviderController extends Controller
      */
     public function update(Request $request, Provider $provider)
     {
-        //
+        $validated = $request->validate([
+            'companyName'=>'required|string',
+        ]);
+
+        $provider->update($request->all());
+        if($request->has('fileAttached')){
+            $provider
+                ->addMediaFromRequest('fileAttached')
+                ->toMediaCollection('providers');
+        }
+
+        activity()->log('Provider'.$request->companyName.' record was UPDATED by logged-in user '.Auth::user()->name);
+
+        return redirect()->route('provider.index')->with(['alert-type'=>'success','message'=>'A Provider was UPDATED successfuly']);
     }
 
     /**

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Gateway;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+class GatewayController extends Controller
 {
     public function __construct()
     {
         $this->pageSet = [
-            'pagename'=>'Products',
-            'menuTag'=>'Products',
+            'pagename'=>'Gateways',
+            'menuTag'=>'Gateways',
             'menuHead'=>'',
-            'actionHed'=>'product',
+            'actionHed'=>'gateway',
             'actionTyp'=>'List',
             'actionID'=>0
         ];
@@ -30,8 +30,6 @@ class ProductController extends Controller
 
     }
 
-
-
     /**
      * Display a listing of the resource.
      *
@@ -39,9 +37,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allprod = Product::all();
+        $gateways = Gateway::all();
 
-        return view('admin.products.index',['ps'=>$this->pageSet,'products'=>$allprod]);
+        return view('admin.gateways.index',['ps'=>$this->pageSet,'gateways'=>$gateways]);
     }
 
     /**
@@ -52,7 +50,8 @@ class ProductController extends Controller
     public function create()
     {
         $this->pageSet['actionTyp'] = 'Create';
-        return view('admin.products.create',['ps'=>$this->pageSet]);
+
+        return view('admin.gateways.create',['ps'=>$this->pageSet]);
     }
 
     /**
@@ -64,29 +63,29 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'=>'required|string',
-            'provider_id'=>'required',
+            'companyName'=>'required|string',
         ]);
 
-        $prod = Product::create($request->all());
+        $gateway = Gateway::create($request->all());
+
         if($request->has('fileAttached')){
-            $prod
+            $gateway
                 ->addMediaFromRequest('fileAttached')
-                ->toMediaCollection('products');
+                ->toMediaCollection('gateways');
         }
 
-        activity()->log('Product '.$request->title.' record was CREATED by logged-in user '.Auth::user()->name);
+        activity('gateway')->log('gateway'.$request->companyName.' record was CREATED by logged-in user '.Auth::user()->name);
 
-        return redirect()->route('product.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        return redirect()->route('gateway.index')->with(['alert-type'=>'success','message'=>'New gateway was created successfuly']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Gateway  $gateway
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Gateway $gateway)
     {
         //
     }
@@ -94,48 +93,49 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Gateway  $gateway
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Gateway $gateway)
     {
         $this->pageSet['actionTyp'] = 'Edit';
-        return view('admin.products.edit',['ps'=>$this->pageSet, 'prod'=>$product]);
+
+        return view('admin.gateways.edit',['ps'=>$this->pageSet, 'prod'=>$gateway]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \App\Gateway  $gateway
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Gateway $gateway)
     {
         $validated = $request->validate([
-            'title'=>'required|string',
-            'provider_id'=>'required',
+            'companyName'=>'required|string',
         ]);
-        
-        $product->update($request->all());
+
+        $gateway->update($request->all());
+
         if($request->has('fileAttached')){
-            $product
+            $gateway
                 ->addMediaFromRequest('fileAttached')
-                ->toMediaCollection('products');
+                ->toMediaCollection('gateways');
         }
 
-        activity()->log('Product '.$request->title.' record was UPDATED by logged-in user '.Auth::user()->name);
+        activity('gateway')->log('gateway'.$request->companyName.' record was UPDATED by logged-in user '.Auth::user()->name);
 
-        return redirect()->route('product.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        return redirect()->route('gateway.index')->with(['alert-type'=>'success','message'=>'New gateway was created successfuly']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Gateway  $gateway
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Gateway $gateway)
     {
         //
     }

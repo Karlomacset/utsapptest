@@ -10,7 +10,8 @@
                 @include('partials.errors')
                 <div class="card-body">
                     <h6 class="card-subtitle">Define the product to be sold to consumers</h6>
-                    <form class="form-material mt-4" action="{{route($ps['actionHed'].'.store')}}" method="POST" enctype="multipart/form-data">
+                    <form class="form-material mt-4" action="{{route($ps['actionHed'].'.update',$prod)}}" method="POST" enctype="multipart/form-data">
+                        @method('PATCH')
                         @csrf
                         @include('admin.products.details')
                         <div class="form-actions">
