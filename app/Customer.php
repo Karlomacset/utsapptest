@@ -13,10 +13,12 @@ class Customer extends Model implements HasMedia
     protected $fillable = [
         'firstName',
         'lastName',
+        'user_id',
         'middleName',
         'motherMaidenName',
         'dateOfBirth',
         'age',
+        'gender',
         'maritalStatus',
         'address1',
         'address2',

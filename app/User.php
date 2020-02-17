@@ -39,4 +39,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function customer()
+    {
+        return $this->hasOne(customer::class, 'user_id');
+    }
+
+    public function getProfilePic()
+    {
+        if($this->customer != null){
+            $loc = $this->customer->getFirstMediaUrl('profile');
+            if($loc == null){
+                $loc = '/assets/images/users/1.jpg';
+            }
+        }else{
+            $loc = '/assets/images/users/1.jpg';
+        }
+
+        return $loc;
+    }
 }

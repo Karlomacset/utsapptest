@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Utilities\ProxyRequest;
 use Illuminate\Support\Facades\Auth;
-
+use App\Product;
 
 class AuthController extends Controller
 {
@@ -101,6 +101,29 @@ class AuthController extends Controller
             'user_id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+        ], 200);
+    }
+
+    public function products()
+    {
+        //this will get all products
+        $products = Product::all();
+        $i = 0;
+        $arr = array();
+        foreach($products as $prod)
+        {
+            $arr[$i] = [
+                'title' => $prod->title,
+                'description'=> $prod->description,
+                'premium'=> $prod->premium_amt,
+                'mediaUrl'=> env('APP_URL').$prod->getFirstMediaUrl('products')
+            ];
+                
+            $i = $i + 1;
+        }
+        return response([
+            'data' => $arr,
+            'message'=>'Product list was returned completely'
         ], 200);
     }
 

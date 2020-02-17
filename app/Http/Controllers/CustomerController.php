@@ -4,9 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $this->pageSet = [
+            'pagename'=>'Customers',
+            'menuTag'=>'Customers',
+            'menuHead'=>'',
+            'actionHed'=>'customer',
+            'actionTyp'=>'List',
+            'actionID'=>0
+        ];
+
+        // $this->middleware('permission:admin-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:admin-show', ['only' => ['index']]);
+        // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
+        // $this->roles = Role::all();
+        $this->middleware('auth');
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +35,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+
+        return view('admin.customers.index',['ps'=>$this->pageSet,'customers'=>$customers]);
     }
 
     /**

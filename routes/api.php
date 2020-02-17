@@ -22,4 +22,5 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', 'AuthController@logout')->name('logout');
     Route::get('user','AuthController@user')->name('user');
+    Route::get('products', 'AuthController@products')->name('products');
 });

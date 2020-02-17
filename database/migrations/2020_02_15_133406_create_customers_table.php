@@ -22,6 +22,7 @@ class CreateCustomersTable extends Migration
             $table->string('motherMaidenName')->nullable();
             $table->date('dateOfBirth')->nullable();
             $table->integer('age')->nullable();
+            $table->string('gender')->nullable();
             $table->string('maritalStatus')->nullable();
             $table->string('address1')->nullable();
             $table->string('address2')->nullable();

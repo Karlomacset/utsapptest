@@ -9,27 +9,30 @@
                                     <table id="config-table" class="table display table-bordered table-striped no-wrap">
                                         <thead>
                                             <tr>
-                                                <th>Tran ID</th>
-                                                <th>Customer</th>
-                                                <th>Mobile NO</th>
-                                                <th>Product</th>
-                                                <th>Premium Amt</th>
-                                                <th>Service Fee</th>
-                                                <th>Provider</th>
-                                                <th>Action</th>
+                                                <th>C ID</th>
+                                                <th>Full Name</th>
+                                                <th>Cell Phone No</th>
+                                                <th>Email</th>
+                                                <th>City</th>
+                                                <th>Company Name</th>
+                                                <th>Last Buy</th>
+                                                <th>Last Product</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($keywords as $key)
+                                            @foreach($customers as $key)
                                             <tr>
-                                                <td>{{$key->filter}}</td>
-                                                <td>{{$key->title}}</td>
-                                                <td>{{$key->description}}</td>
-                                                <td>{{$key->datetime}}</td>
-                                                <td>{{$key->amount}}</td>
-                                                <td>{{$key->number}}</td>
+                                                <td>{{$key->id}}</td>
+                                                <td>{{$key->firstName}} {{$key->middleName}} {{$key->lastName}}</td>
+                                                <td>{{$key->mobileNo}}</td>
+                                                <td>{{$key->email}}</td>
+                                                <td>{{$key->city}}</td>
+                                                <td>{{$key->companyName}}</td>
+                                                <td></td>
+                                                <td></td>
                                                 <td>
-                                                    <a href="{{route('keyword.edit',$key)}}" class="btn btn-primary">Edit</a>
+                                                    <a href="{{route('customer.edit',$key)}}" class="btn btn-primary">Edit</a>
                                                     <a href="#" class="btn btn-warning">Del</a>
                                                 </td>
                                             </tr>
