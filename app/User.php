@@ -7,7 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Employee;
+use App\Customer;
 
 class User extends Authenticatable
 {
@@ -58,4 +59,10 @@ class User extends Authenticatable
 
         return $loc;
     }
+
+    public function associate()
+    {
+            return $this->hasOne(Employee::class);
+    }
+
 }

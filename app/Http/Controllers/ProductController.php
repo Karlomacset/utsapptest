@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Provider;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -40,6 +41,7 @@ class ProductController extends Controller
     public function index()
     {
         $allprod = Product::all();
+        
 
         return view('admin.products.index',['ps'=>$this->pageSet,'products'=>$allprod]);
     }
@@ -52,7 +54,8 @@ class ProductController extends Controller
     public function create()
     {
         $this->pageSet['actionTyp'] = 'Create';
-        return view('admin.products.create',['ps'=>$this->pageSet]);
+        $providers = Provider::all();
+        return view('admin.products.create',['ps'=>$this->pageSet, 'providers'=>$providers]);
     }
 
     /**
@@ -100,7 +103,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $this->pageSet['actionTyp'] = 'Edit';
-        return view('admin.products.edit',['ps'=>$this->pageSet, 'prod'=>$product]);
+        $providers = Provider::all();
+        return view('admin.products.edit',['ps'=>$this->pageSet, 'prod'=>$product, 'providers'=>$providers]);
     }
 
     /**

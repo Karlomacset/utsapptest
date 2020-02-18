@@ -20,4 +20,6 @@ Route::resource('customer','CustomerController');
 Route::resource('keyword','KeywordController');
 Route::resource('gateway','GatewayController');
 
+Route::resource('user','UserController');
+
 Route::get('/','HomeController@index')->name('home');

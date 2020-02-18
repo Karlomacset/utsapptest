@@ -30,9 +30,7 @@
                                 </li> -->
                                 <li><a href="app-chat.html">Chat app</a></li>
                                 <li><a href="app-ticket.html">Support Ticket</a></li>
-                                
                                 <li><a href="app-contact2.html">Employee Grid</a></li>
-                                <li><a href="app-contact-detail.html">Employee Details</a></li>
                             </ul>
                         </li>
                         <li>
@@ -59,6 +57,14 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="table-basic.html">Client Credentials</a></li>
                                 <li><a href="table-layout.html">Document Store</a></li>
+                                <li>
+                                    <a class="has-arrow" href="#" aria-expanded="false">Security</a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="{{route('user.index')}}">Web User Access</a></li>
+                                        <li><a href="#">Roles</a></li>
+                                        <li><a href="#">Permissions</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-devider"></li>

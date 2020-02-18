@@ -14,9 +14,9 @@
                                 <div class="form-group">
                                     <label>Select the Insurance Provider to Underwrite this product</label>
                                     <select class="form-control" name="provider_id">
-                                        <option value=1 >Fortune Insurance Group</option>
-                                        <option value=2>Generali Insurance</option>
-                                        <option value=3>MVIT Insurance Corp</option>
+                                        @foreach($providers as $prov)
+                                        <option value={{$prov->id}} {{(isset($prod)? ($prod->provider_id == $prov->id) ? 'selected': '': '')}} >{{$prov->companyName}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -43,10 +43,12 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                            @if($prod ?? '')
                                 @foreach($prod->getMedia('products') as $prodMedia)
                                     <img class="d-flex mr-3" src="{{$prodMedia->getUrl()}}" width="60"
                                                     alt="image">
                                 @endforeach
+                            @endif
                             </div>
                         </div>
                         
