@@ -20,6 +20,7 @@ class Cors
             'http://localhost:53759',
             'http://localhost:61440',
             'https://go.ismarttms.io',
+            'https://app.ismarttms.io',
         ];
         $requestOrigin = $request->headers->get('origin');
     
