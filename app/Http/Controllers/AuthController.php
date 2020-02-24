@@ -200,6 +200,27 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function checkemail()
+    {
+        // get the user using email and return with basic data
+        $user = User::where('email',request('email'))->first();
+       
+        //abort_unless($user, 200, 'This user does not exist.');
+        if(blank($user)){
+            return response([
+                'message'=>'this user does not exist',
+                'ok'=>false
+            ], 200);
+        }
+
+        return response([
+            'ok'=> true,
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ], 200);
+    }
+
     public function products()
     {
         //this will get all products

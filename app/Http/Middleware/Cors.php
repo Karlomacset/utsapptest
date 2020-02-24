@@ -18,6 +18,7 @@ class Cors
         $allowedOrigins = [
             'http://localhost:3000',
             'http://localhost:53759',
+            'http://localhost:61440',
         ];
         $requestOrigin = $request->headers->get('origin');
     
