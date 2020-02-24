@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Utilities\ProxyRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Product;
+use Ixudra\Curl\Facades\Curl;
 
 class AuthController extends Controller
 {
@@ -25,20 +26,115 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::create([
-            'name' => request('name'),
-            'email' => request('email'),
-            'password' => bcrypt(request('password')),
-        ]);
+        $user = User::where('email',request('email'))->get();
 
-        $resp = $this->proxy->grantPasswordToken(
-            $user->email,
-            request('password')
-        );
+        if(true){
+            $user = User::create([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password' => bcrypt(request('password')),
+                'userDB'=> request('userDB'),
+            ]);
+    
+            $resp = $this->proxy->grantPasswordToken(
+                $user->email,
+                request('password')
+            );
+            activity('test')->log('genCDB: userDB='.request('userDB'));
+            activity('test2')->log('genCDB: userDB='.$user->userDB);
+
+            $r = 'http://localhost:5984/'.$user->userDB;
+            $s = $r.'/_security';
+            $d = 'http://localhost:5984/_users/org.couchdb.user:'.$user->userDB;
+
+            // send command to create the userDB in cdb
+            $res = Curl::to($r)
+                        ->withHeaders([
+                            'Content-Type'=>'application/json',
+                            'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8='
+                        ])
+                        ->put();
+            $sec = Curl::to($s)
+                        ->withHeaders([
+                            'Content-Type'=>'application/json',
+                            'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8=',
+                        ])
+                        ->withData([
+                            'admins'=>[
+                                'names'=>['karlomac'],
+                                'roles'=>['phlDBAdmin']
+                            ],
+                            'members'=>[
+                                'names'=>[$user->userDB],
+                            ]
+                        ])
+                        ->asJson()
+                        ->put();
+
+            $usr = Curl::to($d)
+                        ->withHeaders([
+                            'Accept'=>'application/json',
+                            'Content-Type'=>'application/json',
+                            'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8=',
+                        ])
+                        ->withData([
+                            'name'=>$user->userDB,
+                            'roles'=>['phlMembers'],
+                            'type'=>'user',
+                            'password'=>'Salt1023'
+                        ])
+                        ->asJson()
+                        ->put();
+
+            //$res = $this->genCDB('phl09393kmac');
+    
+            return response([
+                'token' => $resp->access_token,
+                'expiresIn' => $resp->expires_in,
+                'userDB' => [$res,$sec,$usr],
+                'message' => 'Your account has been created',
+            ], 201);
+        }else{
+            return response([
+                'token' => null,
+                'expiresIn' => null,
+                'message' => 'The account already exists!',
+            ], 400);
+        }
+
+        
+    }
+
+    public function genCDB($id)
+    {
+        activity('test')->log('genCDB: userDB='.$id);
+
+        $res = Curl::to('http://localhost:5984/'.$id)
+                ->withHeaders([
+                    'Content-Type:application/json',
+                    'Authorization:Basic YWRtaW46UmVkUml2ZXI3Nz8='
+                ])
+                ->put();
+        $sec = Curl::to('http://localhost:5984/'.$id.'/_security')
+                ->withHeaders([
+                    'Content-Type'=>'application/json',
+                    'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8=',
+                ])
+                ->withData([
+                    'admins'=>[
+                        'names'=>['karlomac'],
+                        'roles'=>['phlDBAdmin']
+                    ],
+                    'members'=>[
+                        'names'=>[$id],
+                    ]
+                ])
+                ->asJson()
+                ->put();
 
         return response([
-            'token' => $resp->access_token,
-            'expiresIn' => $resp->expires_in,
+            'secDB' => $sec,
+            'userDB' => $res,
             'message' => 'Your account has been created',
         ], 201);
     }
