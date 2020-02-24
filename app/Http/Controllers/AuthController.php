@@ -62,7 +62,7 @@ class AuthController extends Controller
                         ->withData([
                             'admins'=>[
                                 'names'=>['karlomac'],
-                                'roles'=>['phlDBAdmin']
+                                'roles'=>['itmsDBAdmin']
                             ],
                             'members'=>[
                                 'names'=>[$user->userDB],
@@ -79,7 +79,7 @@ class AuthController extends Controller
                         ])
                         ->withData([
                             'name'=>$user->userDB,
-                            'roles'=>['phlMembers'],
+                            'roles'=>['itmsMembers'],
                             'type'=>'user',
                             'password'=>'Salt1023'
                         ])
@@ -123,7 +123,7 @@ class AuthController extends Controller
                 ->withData([
                     'admins'=>[
                         'names'=>['karlomac'],
-                        'roles'=>['phlDBAdmin']
+                        'roles'=>['itmsDBAdmin']
                     ],
                     'members'=>[
                         'names'=>[$id],
