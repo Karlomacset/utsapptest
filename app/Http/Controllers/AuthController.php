@@ -158,6 +158,7 @@ class AuthController extends Controller
             'expiresIn' => $resp->expires_in,
             'message' => 'You have been logged in',
             'userID' => $user->id,
+            'userDB' => $user->userDB,
         ], 200);
     }
 
