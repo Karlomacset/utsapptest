@@ -171,7 +171,7 @@ class AuthController extends Controller
             'token' => $resp->access_token,
             'expiresIn' => $resp->expires_in,
             'message' => 'Token has been refreshed.',
-            'userID' => $user->id,
+         //   'userID' => $user->id,
         ], 200);
     }
 
