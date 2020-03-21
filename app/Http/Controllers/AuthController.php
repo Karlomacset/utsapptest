@@ -148,7 +148,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
 
-        abort_unless(is_null($user), 404, 'This combination does not exists.');
+        abort_unless($user, 404, 'This combination does not exists.');
         abort_unless(
             \Hash::check(request('password'), $user->password),
             403,
