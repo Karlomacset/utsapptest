@@ -54,9 +54,8 @@ class AuthController extends Controller
                             'Content-Type'=>'application/json',
                             'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8='
                         ])
-                        ->asJson()
                         ->put();
-            activity('createAccount')->log('createDB: '.$res);
+            //activity('createAccount')->log('createDB: '.$user->userDB);
 
             $sec = Curl::to($s)
                         ->withHeaders([
@@ -74,7 +73,7 @@ class AuthController extends Controller
                         ])
                         ->asJson()
                         ->put();
-            activity('createAccount')->log('assignSecurity: '.$sec);
+        //    activity('createAccount')->log('assignSecurity: '.$sec);
 
             $usr = Curl::to($d)
                         ->withHeaders([
@@ -90,14 +89,13 @@ class AuthController extends Controller
                         ])
                         ->asJson()
                         ->put();
-            activity('createAccount')->log('createUser: '.$user->userDB.' --> '.$usr);
+        //    activity('createAccount')->log('createUser: '.$user->userDB.' --> '.$usr);
 
             //$res = $this->genCDB('phl09393kmac');
     
             return response([
                 'token' => $resp->access_token,
                 'expiresIn' => $resp->expires_in,
-                'userDB' => [$res,$sec,$usr],
                 'message' => 'Your account has been created',
             ], 201);
         }else{
