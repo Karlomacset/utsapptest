@@ -26,9 +26,10 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email',request('email'))->get();
+        $user = User::where('email',request('email'))->first();
+        $userDB = User::where('userDB',request('userDB'))->first();
 
-        if(true){
+        if(!$user && !$userDB){
             $user = User::create([
                 'name' => request('name'),
                 'email' => request('email'),
@@ -53,7 +54,10 @@ class AuthController extends Controller
                             'Content-Type'=>'application/json',
                             'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8='
                         ])
+                        ->asJason()
                         ->put();
+            activity('createAccount')->log('createDB: '.$res);
+
             $sec = Curl::to($s)
                         ->withHeaders([
                             'Content-Type'=>'application/json',
@@ -70,6 +74,7 @@ class AuthController extends Controller
                         ])
                         ->asJson()
                         ->put();
+            activity('createAccount')->log('assignSecurity: '.$sec);
 
             $usr = Curl::to($d)
                         ->withHeaders([
@@ -85,6 +90,7 @@ class AuthController extends Controller
                         ])
                         ->asJson()
                         ->put();
+            activity('createAccount')->log('createUser: '.$user->userDB.' --> '.$usr);
 
             //$res = $this->genCDB('phl09393kmac');
     
@@ -98,6 +104,7 @@ class AuthController extends Controller
             return response([
                 'token' => null,
                 'expiresIn' => null,
+                'error'=>true,
                 'message' => 'The account already exists!',
             ], 400);
         }
@@ -143,7 +150,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
 
-        abort_unless($user, 404, 'This combination does not exists.');
+        abort_unless(is_null($user), 404, 'This combination does not exists.');
         abort_unless(
             \Hash::check(request('password'), $user->password),
             403,

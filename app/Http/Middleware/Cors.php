@@ -17,7 +17,7 @@ class Cors
     {
         $allowedOrigins = [
             'http://localhost:3000',
-            'http://localhost:53759',
+            'http://localhost:51020',
             'http://localhost:61440',
             'https://go.ismarttms.io',
             'https://app.ismarttms.io',

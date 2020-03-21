@@ -18,6 +18,8 @@ Route::middleware('guest')->group(function () {
     Route::post('login', 'AuthController@login')->name('login');
     Route::post('refresh-token', 'AuthController@refreshToken')->name('refreshToken');
     Route::post('check-email','AuthController@checkemail')->name('check-email');
+    Route::post('send-job','MapController@sendJob')->name('send-job');
+    Route::post('getjobupdates','MapController@getJobUpdates');
 });
 
 Route::middleware('auth:api')->group(function () {
