@@ -54,7 +54,7 @@ class AuthController extends Controller
                             'Content-Type'=>'application/json',
                             'Authorization'=>'Basic YWRtaW46UmVkUml2ZXI3Nz8='
                         ])
-                        ->asJason()
+                        ->asJson()
                         ->put();
             activity('createAccount')->log('createDB: '.$res);
 
