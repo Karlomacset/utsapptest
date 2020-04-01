@@ -16,8 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('guest')->group(function () {
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('login', 'AuthController@login')->name('login');
+    Route::post('loginPSC', 'AuthController@loginPSC')->name('loginPSC');
     Route::post('refresh-token', 'AuthController@refreshToken')->name('refreshToken');
     Route::post('check-email','AuthController@checkemail')->name('check-email');
+    Route::post('checkuserDB','AuthController@checkuserDB')->name('checkuserDB');
     Route::post('send-job','MapController@sendJob')->name('send-job');
     Route::post('getjobupdates','MapController@getJobUpdates');
 });

@@ -40,8 +40,16 @@ class ProxyRequest
             'scope' => '*',
         ], $params);
 
+        activity('tokenRequested')
+            ->withProperties($params)
+            ->log('Creating oAuth/Token');
+
         $proxy = \Request::create('oauth/token', 'post', $params);
         $resp = json_decode(app()->handle($proxy)->getContent());
+
+        activity('tokenGenerated')
+            ->withProperties($resp)
+            ->log('Result of oAuth/Token');
 
         $this->setHttpOnlyCookie($resp->refresh_token);
 

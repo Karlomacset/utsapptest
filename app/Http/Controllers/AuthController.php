@@ -29,20 +29,29 @@ class AuthController extends Controller
         $user = User::where('email',request('email'))->first();
         $userDB = User::where('userDB',request('userDB'))->first();
 
+        if(substr(request('userDB'),3,3) != 'doc'){
+            $dispatchDB = request('userDB');
+        }else {
+            $dispatchDB = '';
+        }
+
         if(!$user && !$userDB){
             $user = User::create([
                 'name' => request('name'),
                 'email' => request('email'),
                 'password' => bcrypt(request('password')),
                 'userDB'=> request('userDB'),
+                'dispatchDB'=> $dispatchDB,
+                'psc_token'=> bcrypt(request('pscode')),
             ]);
     
             $resp = $this->proxy->grantPasswordToken(
                 $user->email,
                 request('password')
             );
-            activity('test')->log('genCDB: userDB='.request('userDB'));
-            activity('test2')->log('genCDB: userDB='.$user->userDB);
+
+            activity('registration')
+                ->log('genCDB: userDB='.$user->userDB);
 
             $r = 'http://localhost:5984/'.$user->userDB;
             $s = $r.'/_security';
@@ -65,7 +74,7 @@ class AuthController extends Controller
                         ->withData([
                             'admins'=>[
                                 'names'=>['karlomac'],
-                                'roles'=>['itmsDBAdmin']
+                                'roles'=>['mdpDBAdmin']
                             ],
                             'members'=>[
                                 'names'=>[$user->userDB],
@@ -83,7 +92,7 @@ class AuthController extends Controller
                         ])
                         ->withData([
                             'name'=>$user->userDB,
-                            'roles'=>['itmsMembers'],
+                            'roles'=>['mdpMembers'],
                             'type'=>'user',
                             'password'=>'Salt1023'
                         ])
@@ -96,6 +105,7 @@ class AuthController extends Controller
             return response([
                 'token' => $resp->access_token,
                 'expiresIn' => $resp->expires_in,
+                'api_id' => encrypt(request('password')),
                 'message' => 'Your account has been created',
             ], 201);
         }else{
@@ -148,23 +158,60 @@ class AuthController extends Controller
     {
         $user = User::where('email', request('email'))->first();
 
-        abort_unless($user, 404, 'This combination does not exists.');
-        abort_unless(
-            \Hash::check(request('password'), $user->password),
-            403,
-            'This combination does not exists.'
-        );
-
-        $resp = $this->proxy
-            ->grantPasswordToken(request('email'), request('password'));
-
+        if($user){
+            if(\Hash::check(request('password'),$user->password)){
+               //correct
+                $resp = $this->proxy
+                        ->grantPasswordToken(request('email'), request('password'));
+                return response([
+                    'token' => $resp->access_token,
+                    'expiresIn' => $resp->expires_in,
+                    'message' => 'You have been logged in',
+                    'userID' => $user->id,
+                    'userDB' => $user->userDB,
+                ], 200);
+           }
+        }
         return response([
-            'token' => $resp->access_token,
-            'expiresIn' => $resp->expires_in,
-            'message' => 'You have been logged in',
-            'userID' => $user->id,
-            'userDB' => $user->userDB,
-        ], 200);
+            'token' => '',
+            'expiresIn' => '',
+            'message' => 'The access combination is not valid',
+        ], 403);
+        
+        
+        
+        // abort_unless($user, 404, 'This combination does not exists.');
+        // abort_unless(
+        //     \Hash::check(request('password'), $user->password),
+        //     403,
+        //     'This combination does not exists.'
+        // );
+    }
+
+    public function loginPSC()
+    {
+        //this method uses the psc to authenticate
+        $user = User::where('userDB', request('userDB'))->first();
+
+        if($user){
+            if(\Hash::check(request('pscode'),$user->psc_token)){
+               //correct
+                $resp = $this->proxy
+                        ->grantPasswordToken(request('email'), decrypt(request('api_id')));
+                return response([
+                    'token' => $resp->access_token,
+                    'expiresIn' => $resp->expires_in,
+                    'message' => 'You have been logged in',
+                    'userID' => $user->id,
+                    'userDB' => $user->userDB,
+                ], 200);
+           }
+        }
+        return response([
+            'token' => '',
+            'expiresIn' => '',
+            'message' => 'The access combination is not valid',
+        ], 403);        
     }
 
     public function refreshToken()
@@ -225,6 +272,31 @@ class AuthController extends Controller
             'user_id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'userDB'=> $user->userDB,
+            'dispatchDB'=> $user->dispatchDB,
+        ], 200);
+    }
+
+    public function checkuserDB()
+    {
+        // get the user using email and return with basic data
+        $user = User::where('userDB',request('userDB'))->first();
+       
+        //abort_unless($user, 200, 'This user does not exist.');
+        if(!$user){
+            return response([
+                'message'=>'this userDB does not exist',
+                'ok'=>false
+            ], 200);
+        }
+
+        return response([
+            'ok'=> true,
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'userDB'=> $user->userDB,
+            'dispatchDB'=> $user->dispatchDB,
         ], 200);
     }
 
