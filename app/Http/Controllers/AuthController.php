@@ -30,9 +30,12 @@ class AuthController extends Controller
         $userDB = User::where('userDB',request('userDB'))->first();
 
         if(substr(request('userDB'),3,3) != 'doc'){
+            // use this if not doctor
             $dispatchDB = request('userDB');
+            $docRoles = ['mdpMembers'];
         }else {
             $dispatchDB = '';
+            $docRoles = ['mdpMembers','mdpDoctors'];
         }
 
         if(!$user && !$userDB){
@@ -78,6 +81,7 @@ class AuthController extends Controller
                             ],
                             'members'=>[
                                 'names'=>[$user->userDB],
+                                'roles'=>['mdpDoctors']
                             ]
                         ])
                         ->asJson()
@@ -92,7 +96,7 @@ class AuthController extends Controller
                         ])
                         ->withData([
                             'name'=>$user->userDB,
-                            'roles'=>['mdpMembers'],
+                            'roles'=> $docRoles,
                             'type'=>'user',
                             'password'=>'Salt1023'
                         ])

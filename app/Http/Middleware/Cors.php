@@ -17,10 +17,12 @@ class Cors
     {
         $allowedOrigins = [
             'http://localhost:3000',
+            'http://localhost:53623',
+            'https://river.medipad.co',
+            'https://app.medipad.co',
+            'https://doc.medipad.co',
             'http://localhost:51020',
             'http://localhost:61440',
-            'https://go.ismarttms.io',
-            'https://app.ismarttms.io',
         ];
         $requestOrigin = $request->headers->get('origin');
     
