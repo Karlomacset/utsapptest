@@ -17,7 +17,7 @@ class Cors
     {
         $allowedOrigins = [
             'http://localhost:3000',
-            'http://localhost:53623',
+            'http://localhost:50709',
             'https://river.medipad.co',
             'https://app.medipad.co',
             'https://doc.medipad.co',

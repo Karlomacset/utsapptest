@@ -22,6 +22,7 @@ Route::middleware('guest')->group(function () {
     Route::post('checkuserDB','AuthController@checkuserDB')->name('checkuserDB');
     Route::post('send-job','MapController@sendJob')->name('send-job');
     Route::post('getjobupdates','MapController@getJobUpdates');
+    Route::post('build-index','AuthController@buildIndexes')->name('build-index');
 });
 
 Route::middleware('auth:api')->group(function () {

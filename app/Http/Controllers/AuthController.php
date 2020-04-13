@@ -124,6 +124,36 @@ class AuthController extends Controller
         
     }
 
+    public function buildIndexes(){
+        
+
+        $res = Curl::to('http://localhost:5984/medipad101/_design/PatientReqStub')
+        ->withHeaders([
+            'Content-Type:application/json',
+            'Authorization:Basic YWRtaW46UmVkUml2ZXI3Nz8='
+        ])
+        ->withData([
+            // '_id'=>'_design/PatientReqStub',
+            'filters' => "{
+                'Doctor' : function(doc, req){
+                    return doc.doctorID === req.query.doctorID
+                }.toString()
+            }"
+        ])
+        ->asJson()
+        ->put();
+
+        activity('buildIndexes')
+            ->withProperties($res)
+            ->log('Build indexes ');
+
+        return response([
+            'res'=>$res,
+            'message'=>'Build Index Processed',
+        ]);
+
+    }
+
     public function genCDB($id)
     {
         activity('test')->log('genCDB: userDB='.$id);
