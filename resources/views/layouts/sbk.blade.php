@@ -32,9 +32,10 @@
                         <!-- Logo icon --><b>
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                            <!-- <img src="/assets/images/logo-icon.png" alt="homepage" class="dark-logo" /> -->
                             <!-- Light Logo icon -->
-                            <img src="/assets/images/sabiko-white-logo.png" alt="homepage" class="light-logo" height="55vh"/>
+                            <!-- <img src="/assets/images/sabiko-white-logo.png" alt="homepage" class="light-logo" height="55vh"/> -->
+                            <span class="nav-item text-warning" style="font-size: 3vh">UTS Application Test</span>
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text --><span>
@@ -169,7 +170,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer">
-                © 2020 Sabiko.ph
+                © 2020 by Karlo I Macasaet - Full Stack Developer, Laravel/Vue
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

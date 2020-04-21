@@ -15,10 +15,6 @@
 Auth::routes();
 
 Route::resource('product','ProductController');
-Route::resource('provider','ProviderController');
-Route::resource('customer','CustomerController');
-Route::resource('keyword','KeywordController');
-Route::resource('gateway','GatewayController');
 
 Route::resource('user','UserController');
 
