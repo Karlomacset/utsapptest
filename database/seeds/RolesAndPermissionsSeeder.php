@@ -48,8 +48,8 @@ class RolesAndPermissionsSeeder extends Seeder
         //create first administrator account
 
         $admin = User::create([
-            'name' => 'Super User',
-            'email'=> 'super@app.ismarttms.io',
+            'name' => 'Super Admin',
+            'email'=> 'super@adm.utsapp.test',
             'password' => bcrypt('BlueRock00')
         ]);
 
@@ -62,8 +62,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'user_id' => $admin->id,
             'firstName'=>'Super',
             'lastName'=> 'Admin',
-            'companyName'=>'iSmartTMS.io',
-            'email'=>$admin->email,
+            'companyName'=>'UTS App',
         ]);
 
     }
