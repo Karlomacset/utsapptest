@@ -36,7 +36,10 @@
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Elements</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('client.index')}}">Clients</a></li>
+                                @role('administrator')
+                                    <li><a href="{{route('tenant.index')}}">Tenants</a></li>
+                                    <li><a href="{{route('client.index')}}">Clients</a></li>
+                                @endrole
                                 <li><a href="{{route('product.index')}}">Products</a></li>
                             </ul>
                         </li>

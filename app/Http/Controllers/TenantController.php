@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
-class UserController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use App\Tenant;
+use App\User;
+
+class TenantController extends Controller
 {
     public function __construct()
     {
         $this->pageSet = [
-            'pagename'=>'Web Users',
-            'menuTag'=>'Web Users',
+            'pagename'=>'Tenants',
+            'menuTag'=>'Tenants',
             'menuHead'=>'',
-            'actionHed'=>'user',
+            'actionHed'=>'tenant',
             'actionTyp'=>'List',
             'actionID'=>0
         ];
@@ -24,9 +24,8 @@ class UserController extends Controller
         // $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
         // $this->middleware('permission:admin-show', ['only' => ['index']]);
         // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
-        $this->roles = Role::all();
         $this->middleware(['role:administrator']);
-
+ 
     }
 
     /**
@@ -36,9 +35,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $tenants = Tenant::all();
 
-        return view('admin.users.index',['ps'=>$this->pageSet,'users'=>$users]);
+        return view('tenants.index',['ps'=>$this->pageSet,'tenants'=>$tenants]);
     }
 
     /**
@@ -48,7 +47,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create',['ps'=>$this->pageSet,'roles'=>$this->roles]);
+        return view('tenants.create',['ps'=>$this->pageSet]);
     }
 
     /**
@@ -59,20 +58,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $validated = $request->validate([
-            'name'=>'required|string',
-            'password'=>'confirmed',
+            'name' => 'required|string|max:255',
+            'subdomain'=>'required|string',
+            'alias_domain'=>'required|string',
+        ]);
+        
+        $tenant = Tenant::create($request->all());
+
+        //create the database 
+        $exitCode = Artisan::call('db:create',['dbname'=>$request->subdomain]);
+
+        //run the artisan to create the tenant db
+        $createTenant = Artisan::call('tenant:create',[
+            'dbname'=>$request->subdomain,
+            '--seed'=>true,
+            '--force'=>true,
         ]);
 
-        $prod = User::create($request->all());
-        if($request->has('role')){
-            $prod->assignRole($request->role);
-        }
-
-        activity()->log('web user '.$request->title.' record was CREATED by logged-in user '.Auth::user()->name);
-
-        return redirect()->route('user.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        return redirect()->route('tenant.index')->with(['alert-type'=>'success','message'=>'Tenant & database was CREATED successfully']);
+        
     }
 
     /**
@@ -92,11 +97,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        $roles = Role::all();
+        $tenant = Tenant::find($id);
+        $this->pageSet['actionID']= $id;
+        $this->pageSet['actionTyp']= 'Edit';
 
-        return view('admin.users.edit',['ps'=>$this->pageSet,'roles'=>$roles, 'prod'=>$user]);
+        return view('tenants.edit',['tenant'=>$tenant,'ps'=>$this->pageSet]);
     }
 
     /**
@@ -106,24 +113,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name'=>'required|string',
-            'email'=>'required'
+            'name' => 'required|string|max:255',
+            'subdomain'=>'required|string',
+            'alias_domain'=>'required|string',
         ]);
-        
-        if($request->has('role')){
-            $user->assignRole($request->role);
-        }
-        if($request->password != null){
-            $user->update($request->all());
-        }
 
-        activity()->log('user '.$request->name.' record was UPDATED by logged-in user '.Auth::user()->name);
+        $tenant = Tenant::find($id);
+        $tenant->update($request->all());
 
-        return redirect()->route('user.index')->with(['alert-type'=>'success','message'=>'New User was UPDATED successfuly']);
-    
+        return redirect()->route('tenant.index')->with(['alert-type'=>'success','message'=>'Tenant & database was CREATED successfully']);
     }
 
     /**

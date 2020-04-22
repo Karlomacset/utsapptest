@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'migrationPath' => env('TN_MIGRATEPATH', '../bcms-stage/database/migrations'),
+    'migrationPath' => env('TN_MIGRATEPATH', '../utsapp/database/migrations'),
 
     /*
     |--------------------------------------------------------------------------

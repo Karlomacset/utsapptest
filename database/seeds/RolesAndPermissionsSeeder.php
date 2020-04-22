@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\User;
-use App\Employee;
+use App\Client;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -58,7 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin->assignRole('administrator');
 
         //create profile for administrator - required so login will be completed without error
-        $agent = employee::create([
+        $agent = client::create([
             'user_id' => $admin->id,
             'firstName'=>'Super',
             'lastName'=> 'Admin',

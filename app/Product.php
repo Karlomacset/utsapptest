@@ -13,7 +13,7 @@ class Product extends Model implements HasMedia
     protected $fillable = [
         'title',
             'description',
-            'provider_id',
+            'client_id',
             'premium_amt',
             'service_fee',
     ];

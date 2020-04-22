@@ -11,11 +11,15 @@
 |
 */
 
+Route::get('register','RegManagerController@register')->name('register');
+Route::post('regnewclient','RegManagerControler@regNewClient');
+Route::get('vrf/{id}','RegManagerController@verify');
 
 Auth::routes();
 
 Route::resource('product','ProductController');
 Route::resource('client','ClientController');
 Route::resource('user','UserController');
+Route::resource('tenant','TenantController');
 
 Route::get('/','HomeController@index')->name('home');

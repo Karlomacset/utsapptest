@@ -31,9 +31,9 @@
                                 <div class="d-flex mr-3 ml2">
                                     <a class="btn btn-success" href="{{route($ps['actionHed'].'.store')}}" >Save {{$ps['actionHed']}}</a>
                                 </div>
-                            @elseif($ps['actionTyp'] == 'Edit' )
+                            @elseif($ps['actionTyp'] == 'Edit' && $ps['actionHed'] == 'tenant' )
                                 <div class="d-flex mr-3 ml2">
-                                    <a class="btn btn-success" href="{{route($ps['actionHed'].'.update',$prod->id)}}" >Save {{$ps['actionHed']}}</a>
+                                    <a class="btn btn-success" href="{{route($ps['actionHed'].'.update',$tenant->id)}}" >Save {{$ps['actionHed']}}</a>
                                 </div>
                             @else
                                 <div class="d-flex mr-3 ml2">

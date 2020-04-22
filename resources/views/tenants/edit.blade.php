@@ -5,14 +5,15 @@
         <div class="col-12">
             <div class="card card-outline-info">
                 <div class="card-header">
-                    <h4 class="mb-0 text-white">Primary Users</h4>
+                    <h4 class="mb-0 text-white">Edit a Tenant</h4>
                 </div>
                 @include('partials.errors')
                 <div class="card-body">
-                    <h6 class="card-subtitle">Manage Roles & Permissions of Web Users</h6>
-                    <form class="form-material mt-4" action="{{route($ps['actionHed'].'.store')}}" method="POST" enctype="multipart/form-data">
+                    <h6 class="card-subtitle">CAUTION: Do not edit sub domain and Alias domain if tenancy has been generated</h6>
+                    <form class="form-material mt-4" action="{{route($ps['actionHed'].'.update',$tenant->id)}}" method="POST" enctype="multipart/form-data">
+                        @method('PATCH')
                         @csrf
-                        @include('admin.users.details')
+                        @include('tenants.details')
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
                                 Save</button>

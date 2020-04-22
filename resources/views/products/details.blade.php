@@ -12,7 +12,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Select the Client to Sell this product</label>
+                                    <label>Select the Insurance Provider to Underwrite this product</label>
                                     <select class="form-control" name="provider_id">
                                         @foreach($providers as $prov)
                                         <option value={{$prov->id}} {{(isset($prod)? ($prod->provider_id == $prov->id) ? 'selected': '': '')}} >{{$prov->companyName}}</option>
