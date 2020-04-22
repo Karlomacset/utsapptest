@@ -71,7 +71,7 @@ class tenantCreateCommand extends Command
             $this->line(Artisan::output());
 
             if($seed){
-                $seederCommand = 'php ../bcms-stage/artisan db:seed';
+                $seederCommand = 'php ../utsapp/artisan db:seed';
                 // $seederWithPath = $this->seedPath.'/ContinuSysTenant';
                 $seeder = Artisan::queue('db:seed',[
                     '--database'=>'tenant_db',
@@ -107,7 +107,7 @@ class tenantCreateCommand extends Command
                 ->log('Create sample tenancy tables for '.$sampleDb);
 
             if($seed){
-                $seederCommand = 'php ../bcms-stage/artisan db:seed';
+                $seederCommand = 'php ../utsapp/artisan db:seed';
                 // $seederWithPath = $this->seedPath.'/ContinuSysTenant';
                 $seeder = Artisan::call('db:seed',[
                     '--database'=>'tenant_db',

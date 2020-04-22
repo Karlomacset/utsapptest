@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="card card-outline-info">
                 <div class="card-header">
-                    <h4 class="mb-0 text-white">Micro Insurance Product</h4>
+                    <h4 class="mb-0 text-white">Widget Product</h4>
                 </div>
                 @include('partials.errors')
                 <div class="card-body">
@@ -13,7 +13,7 @@
                     <form class="form-material mt-4" action="{{route($ps['actionHed'].'.update',$prod)}}" method="POST" enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf
-                        @include('admin.products.details')
+                        @include('products.details')
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>
                                 Save</button>

@@ -10,29 +10,25 @@
                                         <thead>
                                             <tr>
                                                 <th>C ID</th>
-                                                <th>Full Name</th>
-                                                <th>Cell Phone No</th>
-                                                <th>Email</th>
-                                                <th>City</th>
                                                 <th>Company Name</th>
-                                                <th>Last Buy</th>
-                                                <th>Last Product</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                                <th>Email</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($customers as $key)
+                                            @foreach($clients as $key)
                                             <tr>
                                                 <td>{{$key->id}}</td>
-                                                <td>{{$key->firstName}} {{$key->middleName}} {{$key->lastName}}</td>
-                                                <td>{{$key->mobileNo}}</td>
-                                                <td>{{$key->email}}</td>
-                                                <td>{{$key->city}}</td>
                                                 <td>{{$key->companyName}}</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{$key->firstName}}</td>
+                                                <td>{{$key->lastName}}</td>
+                                                <td>{{$key->userName}}</td>
+                                                <td>{{$key->user->email}}</td>
                                                 <td>
-                                                    <a href="{{route('customer.edit',$key)}}" class="btn btn-primary">Edit</a>
+                                                    <a href="{{route('client.edit',$key)}}" class="btn btn-primary">Edit</a>
                                                     <a href="#" class="btn btn-warning">Del</a>
                                                 </td>
                                             </tr>

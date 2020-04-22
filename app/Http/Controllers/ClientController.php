@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use App\Client;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+class ClientController extends Controller
 {
     public function __construct()
     {
         $this->pageSet = [
-            'pagename'=>'Products',
-            'menuTag'=>'Products',
+            'pagename'=>'Clients',
+            'menuTag'=>'Clients',
             'menuHead'=>'',
-            'actionHed'=>'product',
+            'actionHed'=>'client',
             'actionTyp'=>'List',
             'actionID'=>0
         ];
@@ -27,11 +24,9 @@ class ProductController extends Controller
         // $this->middleware('permission:admin-show', ['only' => ['index']]);
         // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
         // $this->roles = Role::all();
-        $this->middleware('auth');
+        $this->middleware(['role:administrator|user']);
 
     }
-
-
 
     /**
      * Display a listing of the resource.
@@ -40,10 +35,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allprod = Product::all();
-        
+        $clients = Client::all();
 
-        return view('products.index',['ps'=>$this->pageSet,'products'=>$allprod]);
+        return view('clients.index',['ps'=>$this->pageSet, 'clients'=>$clients]);
     }
 
     /**
@@ -53,9 +47,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->pageSet['actionTyp'] = 'Create';
-        $providers = Client::all();
-        return view('products.create',['ps'=>$this->pageSet, 'providers'=>$providers]);
+        //
+        return view('clients.create',['ps'=>$this->pageSet]);
     }
 
     /**
@@ -67,29 +60,28 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'=>'required|string',
-            'provider_id'=>'required',
+            'companyName'=>'required|string',
         ]);
 
-        $prod = Product::create($request->all());
+        $prod = Client::create($request->all());
         if($request->has('fileAttached')){
             $prod
                 ->addMediaFromRequest('fileAttached')
-                ->toMediaCollection('products');
+                ->toMediaCollection('clients');
         }
 
-        activity()->log('Product '.$request->title.' record was CREATED by logged-in user '.Auth::user()->name);
+        activity()->log('Client '.$request->companyName.' record was CREATED by logged-in user '.Auth::user()->name);
 
-        return redirect()->route('product.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        return redirect()->route('client.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Client $client)
     {
         //
     }
@@ -97,49 +89,46 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Client $client)
     {
-        $this->pageSet['actionTyp'] = 'Edit';
-        $providers = Provider::all();
-        return view('products.edit',['ps'=>$this->pageSet, 'prod'=>$product, 'providers'=>$providers]);
+        return view('clients.edit',['ps'=>$this->pageSet,'client'=>$client]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Client $client)
     {
         $validated = $request->validate([
-            'title'=>'required|string',
-            'provider_id'=>'required',
+            'companyName'=>'required|string',
         ]);
-        
-        $product->update($request->all());
+
+        $client->update($request->all());
         if($request->has('fileAttached')){
-            $product
+            $client
                 ->addMediaFromRequest('fileAttached')
-                ->toMediaCollection('products');
+                ->toMediaCollection('clients');
         }
 
-        activity()->log('Product '.$request->title.' record was UPDATED by logged-in user '.Auth::user()->name);
+        activity()->log('Client '.$request->companyName.' record was UPDATED by logged-in user '.Auth::user()->name);
 
-        return redirect()->route('product.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        return redirect()->route('client.index')->with(['alert-type'=>'success','message'=>'New Agent was UPDATED successfuly']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Client $client)
     {
         //
     }

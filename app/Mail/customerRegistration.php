@@ -18,9 +18,9 @@ class customerRegistration extends Mailable
      *
      * @return void
      */
-    public function __construct(company $company)
+    public function __construct(client $client)
     {
-        $this->company = $company;
+        $this->client = $client;
     }
 
     /**
@@ -31,7 +31,7 @@ class customerRegistration extends Mailable
     public function build()
     {
         return $this->markdown('emails.customer.registration')
-                ->subject('Your Application for ContinuSys BCMS Trial')
-                ->with(['firstName'=>$this->company->primeContact->firstName]);
+                ->subject('Your Application for UTS Application Test Trials')
+                ->with(['firstName'=>$this->client->firstName]);
     }
 }

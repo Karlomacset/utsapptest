@@ -22,7 +22,7 @@ class CreateTenantsTable extends Migration
             $table->string('connection');
             $table->text('meta')->nullable();
             $table->integer('admin_id')->nullable();
-
+            $table->integer('client_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

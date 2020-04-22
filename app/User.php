@@ -43,13 +43,13 @@ class User extends Authenticatable
 
     public function customer()
     {
-        return $this->hasOne(customer::class, 'user_id');
+        return $this->hasOne(client::class, 'user_id');
     }
 
     public function getProfilePic()
     {
-        if($this->customer != null){
-            $loc = $this->customer->getFirstMediaUrl('profile');
+        if($this->client != null){
+            $loc = $this->client->getFirstMediaUrl('profile');
             if($loc == null){
                 $loc = '/assets/images/users/1.jpg';
             }
@@ -60,9 +60,6 @@ class User extends Authenticatable
         return $loc;
     }
 
-    public function associate()
-    {
-            return $this->hasOne(Employee::class);
-    }
+
 
 }

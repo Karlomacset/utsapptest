@@ -36,11 +36,8 @@
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Elements</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{route('customer.index')}}">Customers</a></li>
+                                <li><a href="{{route('client.index')}}">Clients</a></li>
                                 <li><a href="{{route('product.index')}}">Products</a></li>
-                                <li><a href="{{route('provider.index')}}">Providers</a></li>
-                                <li><a href="{{route('gateway.index')}}">Gateways</a></li>
-                                <li><a href="{{route('keyword.index')}}">Keywords</a></li>
                             </ul>
                         </li>
                         <li class="nav-devider"></li>
@@ -48,50 +45,25 @@
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-table"></i><span class="hide-menu">Transactions</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="form-basic.html">Today</a></li>
-                                <li><a href="form-layout.html">All Transactions</a></li>
+                                <li><a href="#">Today</a></li>
+                                <li><a href="#">All Transactions</a></li>
                             </ul>
                         </li>
                         <li>
                             <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Credentials</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="table-basic.html">Client Credentials</a></li>
-                                <li><a href="table-layout.html">Document Store</a></li>
+                                <li><a href="#">Client Credentials</a></li>
+                                <li><a href="#">Document Store</a></li>
                                 <li>
                                     <a class="has-arrow" href="#" aria-expanded="false">Security</a>
                                     <ul aria-expanded="false" class="collapse">
-                                        <li><a href="{{route('user.index')}}">Web User Access</a></li>
+                                        <li><a href="{{route('user.index')}}">Site Administrators</a></li>
                                         <li><a href="#">Roles</a></li>
                                         <li><a href="#">Permissions</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-devider"></li>
-                        <li class="nav-small-cap">WEB MANAGEMENT</li>
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Web Pages</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="starter-kit.html">Starter Kit</a></li>
-                                <li><a href="pages-profile.html">My Profile</a></li>
-                                <li><a href="pages-animation.html">Blog Posts</a></li>
-                                <li><a href="pages-fix-innersidebar.html">Front Page</a></li>
-                                <li><a href="pages-fix-inner-right-sidebar.html">Gallery</a></li>
-                                <li><a href="pages-pricing.html">Pricing</a></li>
-                                <li><a href="pages-faq.html">Faqs</a></li>
-                                <li><a href="#" class="has-arrow">Authentication <span class="label label-rounded label-success">6</span></a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        <li><a href="pages-login.html">Login 1</a></li>
-                                        <li><a href="pages-login-2.html">Login 2</a></li>
-                                        <li><a href="pages-register.html">Register</a></li>
-                                        <li><a href="pages-register2.html">Register 2</a></li>
-                                        <li><a href="pages-lockscreen.html">Lockscreen</a></li>
-                                        <li><a href="pages-recover-password.html">Recover password</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

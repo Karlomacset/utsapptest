@@ -80,14 +80,6 @@ class tenantInitiateCommand extends Command
     
             }
 
-            // $sam = Artisan::call('db:seed',[
-            //     '--database'=>'tenant_db',
-            //     '--class'=>'ContinuSysTenant',
-            //     '--force'=>$force
-            // ]);
-
-            // $this->line(Artisan::output());
-            activity('TenantInit')->log('Seeded tenant table with Continusys Default');
 
             if($sample){
                 $sam = Artisan::call('db:seed',[
@@ -103,23 +95,23 @@ class tenantInitiateCommand extends Command
                 $sa = new User();
                 //$sa->setConnection('tenant_db');
                 $sa->name='SuperAdmin';
-                $sa->email = 'superadmin@continusys.com';
+                $sa->email = 'superadmin@adm.utsapp.test';
                 $sa->password=bcrypt('blueriver00');
                 $sa->save();
 
-                $sa->assignRole('site-admin');
-                $this->line('created Super Admin with site-admin role');
-                activity('TenantInit')->log('Created Super Admin with full site-admin role');
+                $sa->assignRole('administrator');
+                $this->line('created Super Admin with administrator role');
+                activity('TenantInit')->log('Created Super Admin with full administrator role');
 
                 $la = User::create([
                     'name'=>'Local Admin',
-                    'email'=>'localadmin@continusys.com',
+                    'email'=>'localadmin@adm.utsapp.test',
                     'password'=>bcrypt('redriver00'),
                 ]);
 
-                $la->assignRole('local-manager');
-                $this->line('created Local Admin with Local Manager role');
-                activity('TenantInit')->log('Created Local Admin and Local Manager Roles');
+                $la->assignRole('supervisor');
+                $this->line('created Local Admin with supervisor role');
+                activity('TenantInit')->log('Created Local Admin and supervisor Roles');
 
             }
 
@@ -136,7 +128,7 @@ class tenantInitiateCommand extends Command
             activity('TenantInit')->log('Created Initial Tenant entry for '.$dbname);
 
 
-            //copy the tenant info to the bcms to link the tenancy
+            //copy the tenant info to the utsapp to link the tenancy
             $newtenant = new tenant();
             $newtenant->name = $tenant->name;
             $newtenant->email = $tenant->email;
@@ -149,13 +141,13 @@ class tenantInitiateCommand extends Command
             $newtenant->setConnection('tenancy')->save();
             $newtenant->setConnection('mysql');
 
-            activity('TenantInit')->log('Created New Tenant entry in BCMS for '.$dbname);
+            activity('TenantInit')->log('Created New Tenant entry in UTSAPP for '.$dbname);
 
             Config('database.default','mysql');
             
             $this->info('Completed Tenant Initialization');
 
-            //create the dns entry for the domain under continusys
+            //create the dns entry for the domain under utsapp.test
             if( env('TN_BASE_DB') == 'prod' ){
 
                 $data = [
@@ -166,8 +158,8 @@ class tenantInitiateCommand extends Command
                 ];
 
                 $response = Curl::to(env('TN_CLOUDFLARE_EP_NEW_DOMAIN'))
-                    ->withHeader('X-Auth-Email: karlo@lithiumtechnik.com')
-                    ->withHeader('X-Auth-Key: 939bd91a390ccca88249b420e9691e720b86e')
+                    ->withHeader('X-Auth-Email: ')
+                    ->withHeader('X-Auth-Key: ')
                     ->withData($data)
                     ->asJson()
                     ->post();
@@ -184,8 +176,8 @@ class tenantInitiateCommand extends Command
                 ];
 
                 $response = Curl::to(env('TN_CLOUDFLARE_EP_STAGE_NEW_DOMAIN'))
-                    ->withHeader('X-Auth-Email: karlo@lithiumtechnik.com')
-                    ->withHeader('X-Auth-Key: 939bd91a390ccca88249b420e9691e720b86e')
+                    ->withHeader('X-Auth-Email: ')
+                    ->withHeader('X-Auth-Key: ')
                     ->withData($data)
                     ->asJson()
                     ->post();
@@ -194,8 +186,8 @@ class tenantInitiateCommand extends Command
                 activity('DNSResponse')->log(json_encode($response));
             }else{
 
-                $this->error('Alias Domain does not contain continusys.com or TN_BASE_DB property was not set in ENV.  Please create manually');
-                activity('TenantDNS')->log('Alias Domain does not contain continusys.com or TN_BASE_DB is not set.  Please create manually');
+                $this->error('Alias Domain does not contain utsapp.test or TN_BASE_DB property was not set in ENV.  Please create manually');
+                activity('TenantDNS')->log('Alias Domain does not contain utsapp.test or TN_BASE_DB is not set.  Please create manually');
             };
 
             //notify the user that the registration was approved 

@@ -6,8 +6,8 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
-    <title>Sabiko.ph - Administrator</title>
-    <link rel="canonical" href="https://www.sabiko.ph/" />
+    <title>UTS Application Test</title>
+    <link rel="canonical" href="https://www.lithiumtechnik.com/" />
     <!-- chartist CSS -->
     <link href="/assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
     <link href="/assets/plugins/chartist-js/dist/chartist-init.css" rel="stylesheet">
