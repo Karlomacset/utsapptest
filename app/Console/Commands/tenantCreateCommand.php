@@ -17,7 +17,7 @@ class tenantCreateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'tenant:create {dbname} {--force} {--seed} {--sample}';
+    protected $signature = 'tenant:create {dbname} {--force} {--seed} {--sample} {--init}';
 
     /**
      * The console command description.
@@ -49,6 +49,7 @@ class tenantCreateCommand extends Command
         $force = $this->option('force');
         $seed = $this->option('seed');
         $sample = $this->option('sample');
+        $init = $this->option('init');
 
         $tenant = tenant::where('subdomain',$dbname)->get();
 
@@ -58,67 +59,50 @@ class tenantCreateCommand extends Command
             return;
         }
 
-        try{
+        // try{
             config(['database.connections.tenant_db.database'=>$dbname]);
+            config(['database.default'=>'tenant_db']);
+
             $this->info('Creating tables for tenant subdomain: '.$dbname);
-            activity('CreateTenant')->log('Creating Tables for tenant subdomain:'.$dbname.' using path '.$this->migratePath);
-
-            $migrate = Artisan::queue('migrate',[
-                '--database'=>'tenant_db',
-                '--path'=>$this->migratePath,
-                '--force'=>$force,
-            ]);
-            $this->line(Artisan::output());
-
-            if($seed){
-                $seederCommand = 'php ../utsapp/artisan db:seed';
-                // $seederWithPath = $this->seedPath.'/ContinuSysTenant';
-                $seeder = Artisan::queue('db:seed',[
-                    '--database'=>'tenant_db',
-                ]);
-
-                $this->line(Artisan::output());
-                activity('CreateTenant')
-                    ->log('Seeding using seeder command: '.$seederCommand);
-            };
-
-
-        } catch(PDOException $exception){
-            $this->error(sprintf('Failed to create %s database, %s', $dbname, $exception->getMessage()));
-        }
-
-        if($sample){
-            $sampleDb = $dbname.'_sample';
-            config(['database.connections.tenant_db.database'=>$sampleDb]);
-            
-            $createDb = Artisan::call('db:create',['dbname'=>$sampleDb]);
-            $this->line(Artisan::output());
-
-            $this->info('Creating Sample tables for tenant subdomain: '.$dbname);
+ //           activity('CreateTenant')->log('Creating Tables for tenant subdomain:'.$dbname.' using path '.$this->migratePath);
 
             $migrate = Artisan::call('migrate',[
-                '--database'=>'tenant_db',
+//                '--database'=>'tenant_db',
                 '--path'=>$this->migratePath,
                 '--force'=>$force,
             ]);
             $this->line(Artisan::output());
 
-            activity('CreateTenant')
-                ->log('Create sample tenancy tables for '.$sampleDb);
+            for($x = 0; $x < 1000; $x++){
+                //delay until the next job
+            }
 
             if($seed){
                 $seederCommand = 'php ../utsapp/artisan db:seed';
-                // $seederWithPath = $this->seedPath.'/ContinuSysTenant';
                 $seeder = Artisan::call('db:seed',[
-                    '--database'=>'tenant_db',
+//                    '--database'=>'tenant_db',
                 ]);
 
                 $this->line(Artisan::output());
-                activity('CreateTenant')
-                    ->log('Sample Seeding using seeder command: '.$seederCommand);
+//                activity('CreateTenant')
+  //                  ->log('Seeding using seeder command: '.$seederCommand);
             };
 
-        }
+            for($x = 0; $x < 1000; $x++){
+                //delay until the next job
+            }
 
+            if($init){
+ //               activity('InitTenant')
+   //             ->log('Tenant being initialised for the first run. ');
+
+                Artisan::call('tenant:init',[
+                    'dbname'=>$dbname,
+                    '--seed'=>false,
+                    '--force'=>true
+                ]);
+            }
+
+            Config('database.default','mysql');
     }
 }

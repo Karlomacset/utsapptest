@@ -18,7 +18,7 @@ class tenantInitiateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'tenant:init {dbname} {--seed} {--sample} {--force} {--nodns}';
+    protected $signature = 'tenant:init {dbname} {--seed} {--force} {--nodns}';
 
     /**
      * The console command description.
@@ -48,7 +48,6 @@ class tenantInitiateCommand extends Command
         $dbname = $this->argument('dbname');
         $seed = $this->option('seed');
         $force = $this->option('force');
-        $sample = $this->option('sample');
         $nodns = $this->option('nodns');
 
         config(['database.default'=>'mysql']);
@@ -64,33 +63,24 @@ class tenantInitiateCommand extends Command
             
             if($seed){
                 $init = Artisan::call('db:seed',[
-                    '--class'=>'PermissionsTableSeeder',
+                    '--class'=>'RolesAndPermissionsSeeder',
                     '--database'=>'tenant_db',
                     '--force'=>$force,
                 ]);
-                $this->line(Artisan::output().' Roles');
+                // $this->line(Artisan::output().' Roles');
     
-                $init = Artisan::call('db:seed',[
-                    '--class'=>'RolesTableSeeder',
-                    '--database'=>'tenant_db',
-                    '--force'=>$force,
-                ]);
+                // $init = Artisan::call('db:seed',[
+                //     '--class'=>'RolesTableSeeder',
+                //     '--database'=>'tenant_db',
+                //     '--force'=>$force,
+                // ]);
                 $this->line(Artisan::output().' Permissions');
                 Activity('TenantInit')->log('Tenant seeding for Roles and Permission is complete');
     
             }
 
+            activity('TenantInit')->log('Creating Local Admin and supervisor Roles');
 
-            if($sample){
-                $sam = Artisan::call('db:seed',[
-                    '--class'=>'LaratrustSeeder',
-                    '--database'=>'tenant_db',
-                    '--force'=>$force,
-                ]);
-                $this->line(Artisan::output());
-                activity('TenantInit')->log('Tenant seeding using Laratrust is complete');
-
-            }else{
                 //create the primary admin for the tenant
                 $sa = new User();
                 //$sa->setConnection('tenant_db');
@@ -101,7 +91,8 @@ class tenantInitiateCommand extends Command
 
                 $sa->assignRole('administrator');
                 $this->line('created Super Admin with administrator role');
-                activity('TenantInit')->log('Created Super Admin with full administrator role');
+
+            activity('TenantInit')->log('Created Super Admin with full administrator role');
 
                 $la = User::create([
                     'name'=>'Local Admin',
@@ -111,9 +102,8 @@ class tenantInitiateCommand extends Command
 
                 $la->assignRole('supervisor');
                 $this->line('created Local Admin with supervisor role');
-                activity('TenantInit')->log('Created Local Admin and supervisor Roles');
-
-            }
+                
+            
 
             //copy the tenant info to the new tenant as default
             $newtenant = new tenant();
@@ -122,24 +112,25 @@ class tenantInitiateCommand extends Command
             $newtenant->subdomain = $tenant->subdomain;
             $newtenant->alias_domain = $tenant->alias_domain;
             $newtenant->admin_id  = $tenant->admin_id;
-            $newtenant->company_id = $tenant->company_id;
+            $newtenant->client_id = $tenant->client_id;
             $newtenant->connection = $tenant->connection;
             $newtenant->save();
+
             activity('TenantInit')->log('Created Initial Tenant entry for '.$dbname);
 
 
-            //copy the tenant info to the utsapp to link the tenancy
-            $newtenant = new tenant();
-            $newtenant->name = $tenant->name;
-            $newtenant->email = $tenant->email;
-            $newtenant->subdomain = $tenant->subdomain;
-            $newtenant->alias_domain = $tenant->alias_domain;
-            $newtenant->admin_id  = $tenant->admin_id;
-            $newtenant->company_id = $tenant->company_id;
-            $newtenant->connection = $tenant->connection;
-            $newtenant->exists = false;
-            $newtenant->setConnection('tenancy')->save();
-            $newtenant->setConnection('mysql');
+            // //copy the tenant info to the utsapp to link the tenancy
+            // $newtenant = new tenant();
+            // $newtenant->name = $tenant->name;
+            // $newtenant->email = $tenant->email;
+            // $newtenant->subdomain = $tenant->subdomain;
+            // $newtenant->alias_domain = $tenant->alias_domain;
+            // $newtenant->admin_id  = $tenant->admin_id;
+            // $newtenant->client_id = $tenant->client_id;
+            // $newtenant->connection = $tenant->connection;
+            // $newtenant->exists = false;
+            // $newtenant->setConnection('tenant_db')->save();
+            // $newtenant->setConnection('mysql');
 
             activity('TenantInit')->log('Created New Tenant entry in UTSAPP for '.$dbname);
 

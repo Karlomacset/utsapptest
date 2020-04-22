@@ -39,7 +39,7 @@
     <section id="wrapper" class="login-register login-sidebar"  style="background-image:url(/assets/images/background/login-register.jpg);">
   <div class="login-box card">
     <div class="card-body">
-      <form class="form-horizontal form-material" id="loginform" action="{{url('/regnewclient')}}">
+      <form class="form-horizontal form-material" id="loginform" action="{{url('/regnewclient')}}" method="POST">
           @csrf
         <!-- <a href="javascript:void(0)" class="text-center d-block"><img src="/assets/images/logo-icon.png" alt="Home" /><br/><img src="/assets/images/logo-text.png" alt="Home" /></a>  -->
         <h3 class="p-2 rounded-title mt-4 mb-0">Register Now</h3><small>Create your account and enjoy</small> 

@@ -12,7 +12,7 @@
 */
 
 Route::get('register','RegManagerController@register')->name('register');
-Route::post('regnewclient','RegManagerControler@regNewClient');
+Route::post('regnewclient','RegManagerController@registerNewClient');
 Route::get('vrf/{id}','RegManagerController@verify');
 
 Auth::routes();

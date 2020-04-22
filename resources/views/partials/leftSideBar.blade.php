@@ -38,8 +38,8 @@
                             <ul aria-expanded="false" class="collapse">
                                 @role('administrator')
                                     <li><a href="{{route('tenant.index')}}">Tenants</a></li>
-                                    <li><a href="{{route('client.index')}}">Clients</a></li>
                                 @endrole
+                                <li><a href="{{route('client.index')}}">Clients</a></li>
                                 <li><a href="{{route('product.index')}}">Products</a></li>
                             </ul>
                         </li>

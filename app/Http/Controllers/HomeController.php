@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Client;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -39,6 +41,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['ps'=>$this->pageSet]);
+        $user = Auth::user();
+        $client = Client::where('user_id',$user->id)->get();
+        return view('dashboard', ['ps'=>$this->pageSet,'client'=>$client]);
     }
 }

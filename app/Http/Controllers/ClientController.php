@@ -24,7 +24,7 @@ class ClientController extends Controller
         // $this->middleware('permission:admin-show', ['only' => ['index']]);
         // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
         // $this->roles = Role::all();
-        $this->middleware(['role:administrator|user']);
+        $this->middleware(['role:administrator|user|supervisor']);
 
     }
 

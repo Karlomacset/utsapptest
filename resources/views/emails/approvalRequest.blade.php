@@ -1,5 +1,5 @@
 @component('mail::message')
-# Your Approval is needed for {{$company}}
+# Your Approval is needed for {{$client}}
 
 Please click on the button below to approve this new UTS Application Test Registration:
 
@@ -7,7 +7,7 @@ Please click on the button below to approve this new UTS Application Test Regist
     Primary Contact Name: {{$fullName}}<br>
     Email Address       : {{$email}}<br>
     Telephone           : {{$telephone}}<br>
-    Company             : {{$company}}<br>
+    Company             : {{$client}}<br>
 @endcomponent
 
 @component('mail::button', ['url' => $url])

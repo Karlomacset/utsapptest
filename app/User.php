@@ -9,10 +9,12 @@ use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Employee;
 use App\Customer;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, HasApiTokens, HasRoles;
+    use Notifiable, HasApiTokens, HasRoles, HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -41,15 +43,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function customer()
+    public function client()
     {
-        return $this->hasOne(client::class, 'user_id');
+        return $this->belongsTo(client::class, 'user_id','id');
     }
 
     public function getProfilePic()
     {
-        if($this->client != null){
-            $loc = $this->client->getFirstMediaUrl('profile');
+        if($this->user != null){
+            $loc = $this->user->getFirstMediaUrl('profile');
             if($loc == null){
                 $loc = '/assets/images/users/1.jpg';
             }

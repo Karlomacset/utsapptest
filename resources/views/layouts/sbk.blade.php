@@ -60,7 +60,13 @@
                         <li class="nav-item"> <a
                                 class="nav-link sidebartoggler d-none d-md-block text-muted waves-effect waves-dark"
                                 href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        @role('administrator')
                         <li class="nav-item text-warning" style="font-size: 3vh">Administrator</li>
+                        @endrole
+                        @role('supervisor')
+                        <li class="nav-item text-warning" style="font-size: 3vh">Client</li>
+                        @endrole
+
                         @includewhen(isset($search)? $search: false, 'partials.searchBar')
                         @includewhen(isset($megmenu)? $megamenu: false, 'partials.megamenu')
 
@@ -95,7 +101,7 @@
                                             <div class="u-img"><img src="{{Auth::user()->getProfilePic()}}" alt="user"></div>
                                             <div class="u-text">
                                                 <h4>{{Auth::user()->name}}</h4>
-                                                <p class="text-muted">{{Auth::user()->email}}</p><a href="#"
+                                                <p class="text-muted">{{Auth::user()->email}}</p><a href="{{route('user.edit',Auth::user()->id)}}"
                                                     class="btn btn-rounded btn-danger btn-sm">View
                                                     Profile</a>
                                             </div>

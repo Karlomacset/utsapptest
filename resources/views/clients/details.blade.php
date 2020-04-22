@@ -43,9 +43,17 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Product Description</label>
+                                    <textarea name="description" class="form-control" rows="2">{{isset($prod) ? $prod->description : old('description')}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 pb-3">
                             @if($client ?? '')
-                                @foreach($client->getMedia('products') as $clientMedia)
-                                    <img class="d-flex mr-3" src="{{$clientMedia->getUrl()}}" width="60"
+                                @foreach($client->getMedia('clients') as $clientMedia)
+                                    <img class="d-flex mr-3" src="{{$clientMedia->getUrl()}}" width="40"
                                                     alt="image">
                                 @endforeach
                             @endif

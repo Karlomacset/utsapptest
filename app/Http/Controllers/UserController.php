@@ -24,8 +24,9 @@ class UserController extends Controller
         // $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
         // $this->middleware('permission:admin-show', ['only' => ['index']]);
         // $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
+        $this->middleware(['permission:edit|update','role:administrator|supervisor']);
         $this->roles = Role::all();
-        $this->middleware(['role:administrator']);
+        
 
     }
 
@@ -65,14 +66,23 @@ class UserController extends Controller
             'password'=>'confirmed',
         ]);
 
-        $prod = User::create($request->all());
+        $user = User::create($request->all());
+        $user->password = bcrypt($request->password);
+        $user->save();
+
         if($request->has('role')){
-            $prod->assignRole($request->role);
+            $user->assignRole($request->role);
         }
 
-        activity()->log('web user '.$request->title.' record was CREATED by logged-in user '.Auth::user()->name);
+        if($request->has('fileAttached')){
+            $user
+                ->addMediaFromRequest('fileAttached')
+                ->toMediaCollection('profile');
+        }
 
-        return redirect()->route('user.index')->with(['alert-type'=>'success','message'=>'New Agent was created successfuly']);
+        activity()->log('web user '.$request->name.' record was CREATED by logged-in user '.Auth::user()->name);
+
+        return redirect()->route('user.index')->with(['alert-type'=>'success','message'=>'New User was created successfuly']);
     }
 
     /**
@@ -118,6 +128,15 @@ class UserController extends Controller
         }
         if($request->password != null){
             $user->update($request->all());
+        }else{
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
+
+        if($request->has('fileAttached')){
+            $user
+                ->addMediaFromRequest('fileAttached')
+                ->toMediaCollection('profile');
         }
 
         activity()->log('user '.$request->name.' record was UPDATED by logged-in user '.Auth::user()->name);

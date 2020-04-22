@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Company;
+use App\Client;
 
 class sendNewCustomerTrialRequest extends Mailable
 {
@@ -18,7 +18,7 @@ class sendNewCustomerTrialRequest extends Mailable
      *
      * @return void
      */
-    public function __construct(client $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -33,13 +33,13 @@ class sendNewCustomerTrialRequest extends Mailable
         $fullName = $this->client->firstName.' '.$this->client->lastName;
         $url = env('APP_URL').'/vrf/';
 
-        return $this->markdown('emails.customer.approvalRequest')
+        return $this->markdown('emails.approvalRequest')
                 ->subject('Your Approval is needed for UTS Application Test for '.$this->client->companyName)
                 ->with([
-                    'fullName'=>$fullName,
-                    'client'=>$this->client->clientName,
-                    'email'=>$this->client->user->email,
-                    'telephone'=>$this->client->officePhone,
+                    'fullName'=>$this->client->fullname(),
+                    'client'=>$this->client->companyName,
+                    'email'=>$this->client->userName,
+                    'telephone'=>'',
                     'url'=>$url.$this->client->approvalToken,
                 ]);
     }

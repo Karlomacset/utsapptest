@@ -6,7 +6,7 @@ The details of your trial are as follows:
 @component('mail::panel')
     Primary Contact Name: {{$fullname}}<br>
     Email Address       : {{$email}}<br>
-    Company             : {{$company}}<br>
+    Company             : {{$client}}<br>
     Trial Link          : {{$url}}<br>
     Expiry (30 days)    : {{$expireDate}}<br> 
 @endcomponent

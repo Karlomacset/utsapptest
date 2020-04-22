@@ -23,6 +23,7 @@ class CreateTenantsTable extends Migration
             $table->text('meta')->nullable();
             $table->integer('admin_id')->nullable();
             $table->integer('client_id')->nullable();
+            $table->integer('status_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

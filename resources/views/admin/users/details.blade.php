@@ -14,6 +14,10 @@
             <input id="email" class="form-control" type="text" name="email" value="{{isset($prod)? $prod->email : old('email')}}">
         </div>
     </div>
+    <div class="form-group">
+        <label for="uploadphoto" class="label-control">Upload Photo or Documents</label>
+        <input type="file" class="form-control form-control-line" name="fileAttached" id="uploadphoto">
+    </div>
 </div>
 
 <div class="col-md-6">

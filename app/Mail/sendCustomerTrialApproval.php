@@ -18,7 +18,7 @@ class sendCustomerTrialApproval extends Mailable
      *
      * @return void
      */
-    public function __construct(tenant $tenant)
+    public function __construct(Tenant $tenant)
     {
         $this->tenant = $tenant;
     }
@@ -30,8 +30,8 @@ class sendCustomerTrialApproval extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.customer.trialApproval')
-                ->subject('You Trial for ContinuSYS BCMS was Approved!')
+        return $this->markdown('emails.trialApproval')
+                ->subject('You UTS Application Account was Approved!')
                 ->with([
                     'fullname'=>$this->tenant->client->fullname(),
                     'client'=>$this->tenant->client->companyName,

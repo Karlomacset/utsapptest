@@ -20,9 +20,10 @@ class CreateClientsTable extends Migration
             $table->string('lastName')->nullable();
             $table->string('userName')->nullable();
             $table->integer('admin_id')->nullable();
-            $table->integer('client_id')->nullable();
+            $table->integer('user_id')->nullable();
             $table->integer('status_id')->nullable();
             $table->string('approvalToken')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
