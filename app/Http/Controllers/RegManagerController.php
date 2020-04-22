@@ -83,7 +83,6 @@ class RegManagerController extends Controller
                     '--init'=>true
                 ]);
     
-                dd($x);
 
                 //change the approvtoken to disable the approval trigger
                 $client->approvalToken = Str::random(16);
